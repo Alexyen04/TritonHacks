@@ -1,0 +1,127 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title> Aim Trainer </title>
+    <link href='https://fonts.googleapis.com/css?family=Amatic+SC:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+
+    <h1> Aim Trainer <span class="score">0</span></h1>
+    <input type = "button" class = "button" onClick = "startGame()" value = "Start!"/>
+
+    <!--<canvas id="myCanvas"></canvas>-->
+
+    <!--<script src="canvas.js"> </script>-->
+
+    <!-- <img src="dirt.svg" id="dirt"> -->
+
+    <div class="game">
+        <div class="hole hole1">
+        <div class="target"></div>
+        </div>
+        <div class="hole hole2">
+        <div class="target"></div>
+        </div>
+        <div class="hole hole3">
+        <div class="target"></div>
+        </div>
+        <div class="hole hole4">
+        <div class="target"></div>
+        </div>
+        <div class="hole hole5">
+        <div class="target"></div>
+        </div>
+        <div class="hole hole6">
+        <div class="target"></div>
+        </div>
+        <div class="hole hole7">
+            <div class="target"></div>
+        </div>
+        <div class="hole hole8">
+            <div class="target"></div>
+        </div>
+        <div class="hole hole9">
+            <div class="target"></div>
+        </div>
+        <div class="hole hole10">
+            <div class="target"></div>
+        </div>
+        <div class="hole hole11">
+            <div class="target"></div>
+        </div>
+        <div class="hole hole12">
+            <div class="target"></div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+
+    let lastHole;
+    var hole;
+    var score;
+    const holes = document.querySelectorAll('.hole');
+    const scoreBoard = document.querySelector('.score');
+    const targets = document.querySelectorAll('.target');
+
+    function randomPos(holes){
+            for(var i = 0; i<holes.length; i++){
+                var dx = Math.round(Math.random()*(window.innerWidth));
+                //console.log('dx '+dx);
+                var dy = Math.round(Math.random()*(window.innerHeight));
+                //console.log('dy '+dy);
+                holes[i].style.left= 10;
+                holes[i].style.top= 10;
+                console.log(holes[i].style);
+            }
+    }
+    //randomPos(holes);
+
+    function randTime(min, max){
+        return Math.round(Math.random()*(max-min)+min);
+    }
+    function randomHoles(holes){
+        const index = Math.floor(Math.random()*holes.length);
+        hole = holes[index];
+        if(lastHole == hole){
+            return randomHoles(holes);
+        }
+        lastHole = hole;
+        return hole;
+    }
+    function peep(){
+        const time = randTime(400,700);
+        hole = randomHoles(holes);
+        hole.classList.add('up');
+        setTimeout(function() {
+            hole.classList.remove('up')
+            if(!timeUp){
+                peep();
+            }
+            }, time);
+    }
+    function startGame(){
+        scoreBoard.textContent = 0;
+        score = 0;
+        timeUp = false;
+        peep();
+        setTimeout(function() {timeUp = true}, 10000);
+
+    }
+    function bonk(e){
+        console.log(e);
+        score++;
+        this.classList.remove('up');
+        //console.log(scoreBoard);
+        //console.log(score);
+        scoreBoard.innerHTML = score;
+    }
+    targets.forEach(target => target.addEventListener('click', bonk));
+
+    </script>
+    </body>
+    </html>
